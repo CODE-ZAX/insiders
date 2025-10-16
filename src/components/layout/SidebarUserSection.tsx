@@ -8,13 +8,12 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Bell, Settings, UserRound } from "lucide-react";
 
-import { createSPAClient, createSPASassClient } from "@/lib/supabase/client";
+import { createSPAClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CreatePostModal } from "@/components/CreatePostModal";
-import { createPost } from "@/services/posts";
+import type { User } from "@supabase/supabase-js";
 
 interface UserMeta {
   email?: string;
@@ -22,17 +21,10 @@ interface UserMeta {
   avatar_url?: string;
 }
 
-interface SidebarUser {
-  id: string;
-  email: string | null;
-  user_metadata: UserMeta;
-}
-
 export function SidebarUserSection() {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [creatingPost, setCreatingPost] = useState(false);
-  const router = useRouter();
+  const [creatingPost] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -59,12 +51,13 @@ export function SidebarUserSection() {
     const name =
       user.user_metadata?.full_name ||
       user.email ||
-      user.user_metadata?.email ||
+      (user.user_metadata as UserMeta | undefined)?.email ||
       "User";
     return name
       .split(" ")
-      .map((part: any) => part.trim()[0])
+      .map((part: any) => part.trim())
       .filter(Boolean)
+      .map((part: any) => part[0] ?? "")
       .join("")
       .slice(0, 2)
       .toUpperCase();
@@ -99,20 +92,6 @@ export function SidebarUserSection() {
 
   const avatarUrl = user.user_metadata?.avatar_url;
 
-  const handleCreatePost = async (payload: {
-    caption: string;
-    imageUrls: string[];
-  }) => {
-    if (creatingPost) return;
-    setCreatingPost(true);
-    try {
-      await createPost(payload);
-      router.refresh();
-    } finally {
-      setCreatingPost(false);
-    }
-  };
-
   return (
     <div className="mt-auto space-y-4 rounded-2xl border border-border/60 bg-muted/40 p-4">
       <div className="flex items-center gap-3">
@@ -136,7 +115,6 @@ export function SidebarUserSection() {
         </div>
       </div>
       <CreatePostModal
-        onSubmit={handleCreatePost}
         trigger={
           <Button
             type="button"

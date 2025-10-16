@@ -21,14 +21,12 @@ interface DeletePostDialogProps {
   postId: string;
   caption?: string | null;
   trigger?: React.ReactNode;
-  onConfirm?: (postId: string) => Promise<void> | void;
 }
 
 export function DeletePostDialog({
   postId,
   caption,
   trigger,
-  onConfirm,
 }: DeletePostDialogProps) {
   const [open, setOpen] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);

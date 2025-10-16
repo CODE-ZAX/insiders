@@ -3,18 +3,14 @@ import { useState, useEffect } from "react";
 import { createSPASassClient } from "@/lib/supabase/client";
 import { Bell, Plus, Settings } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { CreatePostModal } from "./CreatePostModal";
 import { User } from "@supabase/supabase-js";
-import { createPost } from "@/services/posts";
-
 export default function AuthAwareButtons() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
-  const router = useRouter();
+  const [creating] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -35,17 +31,6 @@ export default function AuthAwareButtons() {
     checkAuth();
   }, []);
 
-  const handleCreate = async (payload: { caption: string; imageUrls: string[] }) => {
-    if (creating) return;
-    setCreating(true);
-    try {
-      await createPost(payload);
-      router.refresh();
-    } finally {
-      setCreating(false);
-    }
-  };
-
   if (loading) {
     return null;
   }
@@ -55,7 +40,6 @@ export default function AuthAwareButtons() {
   return isAuthenticated ? (
     <div className="flex items-center gap-1">
       <CreatePostModal
-        onSubmit={handleCreate}
         trigger={
           <Button
             className="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors gap-2"

@@ -50,7 +50,7 @@ export async function createPost(payload: PostPayload): Promise<UserPost> {
 
   const { data, error } = await supabase
     .from("posts")
-    //@ts-expect-error
+    //@ts-expect-error Since it is not definded in the types
     .insert({
       caption: payload.caption,
       image_urls: payload.imageUrls,
@@ -74,7 +74,7 @@ export async function updatePost(
 
   const { data, error } = await supabase
     .from("posts")
-    //@ts-expect-error
+    //@ts-expect-error Since it is not definded in the types
     .update({
       caption: payload.caption,
       image_urls: payload.imageUrls,

@@ -4,8 +4,6 @@ import { createSSRClient } from "@/lib/supabase/server";
 import { fetchUserPosts } from "@/services/posts";
 import { UserPostGallery } from "@/components/profile/UserPostGallery";
 import type { UserPost } from "@/types/types";
-import { Button } from "@/components/ui/button";
-import { DoorClosed } from "lucide-react";
 import LogoutButton from "@/components/profile/LogoutButton";
 
 interface ProfilePageProps {

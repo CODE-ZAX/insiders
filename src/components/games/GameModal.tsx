@@ -48,6 +48,16 @@ export function GameModal({
                 </DialogDescription>
               ) : null}
             </DialogHeader>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              aria-label="Close game"
+              className="h-8 w-8 shrink-0 rounded-full text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
           <div className="flex-1 overflow-hidden bg-background/90 p-6">
             <div className="h-full flex justify-center  w-full overflow-auto rounded-lg border border-border/60 bg-background p-4">

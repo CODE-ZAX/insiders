@@ -21,13 +21,9 @@ import { updatePost } from "@/services/posts";
 interface EditPostModalProps {
   post: UserPost;
   trigger?: React.ReactNode;
-  onSubmit?: (payload: {
-    caption: string;
-    imageUrls: string[];
-  }) => Promise<void> | void;
 }
 
-export function EditPostModal({ post, trigger, onSubmit }: EditPostModalProps) {
+export function EditPostModal({ post, trigger }: EditPostModalProps) {
   const [open, setOpen] = React.useState(false);
   const [caption, setCaption] = React.useState(post.caption ?? "");
   const [imageUrls, setImageUrls] = React.useState<string[]>(
@@ -142,7 +138,7 @@ export function EditPostModal({ post, trigger, onSubmit }: EditPostModalProps) {
         caption: trimmedCaption,
         imageUrls: cleanedImages.filter(Boolean),
       };
-      const result = updatePost(post.id, payload);
+      updatePost(post.id, payload);
       handleOpenChange(false);
     } catch (error) {
       console.error("EditPostModal submit error", error);

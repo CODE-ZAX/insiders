@@ -19,13 +19,9 @@ import { createPost } from "@/services/posts";
 
 interface CreatePostModalProps {
   trigger?: React.ReactNode;
-  onSubmit?: (payload: {
-    caption: string;
-    imageUrls: string[];
-  }) => Promise<void> | void;
 }
 
-export function CreatePostModal({ trigger, onSubmit }: CreatePostModalProps) {
+export function CreatePostModal({ trigger }: CreatePostModalProps) {
   const [open, setOpen] = React.useState(false);
   const [caption, setCaption] = React.useState("");
   const [imageUrls, setImageUrls] = React.useState<string[]>([""]);
@@ -132,7 +128,7 @@ export function CreatePostModal({ trigger, onSubmit }: CreatePostModalProps) {
         caption: trimmedCaption,
         imageUrls: cleanedImages.filter(Boolean),
       };
-      const result = await createPost(payload);
+      await createPost(payload);
       handleOpenChange(false);
     } catch (error) {
       console.error("CreatePostModal submit error", error);
