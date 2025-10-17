@@ -8,13 +8,13 @@ import { Input } from "@/components/ui/input";
 type TabKey = "feed" | "reels" | "search";
 
 interface HomePageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     tab?: string;
-  };
+  }>;
 }
 
-export default function Home({ searchParams }: HomePageProps) {
-  const tab = normalizeTab(searchParams?.tab);
+export default async function Home({ searchParams }: HomePageProps) {
+  const tab = normalizeTab((await searchParams)?.tab);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">

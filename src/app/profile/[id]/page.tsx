@@ -7,9 +7,9 @@ import type { UserPost } from "@/types/types";
 import LogoutButton from "@/components/profile/LogoutButton";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
@@ -27,7 +27,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     redirect("/auth/login");
   }
 
-  const profileId = params.id;
+  const profileId = (await params).id;
 
   let posts: UserPost[] = [];
   let loadError: string | null = null;
